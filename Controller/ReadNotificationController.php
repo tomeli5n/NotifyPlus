@@ -18,9 +18,27 @@ class ReadNotificationController extends \Kanboard\Controller\BaseController
         $user = $this->getUser();
         $notifications = $this->userUnreadNotificationModel->getAll($user['id']);
 
+        $groupedNotifications = [];
+        foreach ($notifications as $notification) {
+            $task_id = $notification['event_data']['task']['id']; // Asumimos que siempre hay un task_id
+            //if (!isset($groupedNotifications[$task_id])) {
+                $groupedNotifications[$task_id] = [
+                    'task_id' => $task_id,
+                    'project_name' => $notification['event_data']['task']['project_name'],
+                    'project_id' => $notification['event_data']['task']['project_id'],
+                    'title' => $notification['event_data']['task']['title'],
+                    'date_creation' => $notification['date_creation'], // Usar la fecha más reciente o una lógica específica
+                    'notification_id' => $notification['id'], // para retrocompatibilidad con metodos de controller
+                    'notifications' => []
+                ];
+            //}
+            $groupedNotifications[$task_id]['notifications'][] = $notification;
+        }
+
         $this->response->html($this->template->render('web_notification/show', array(
             'notifications'    => $notifications,
-            'nb_notifications' => count($notifications),
+            'groupedNotifications'  => $groupedNotifications,
+            'nb_notifications' => count($groupedNotifications),
             'user'             => $user,
         )));
     }

@@ -9,6 +9,7 @@ class Plugin extends Base
 {
     public function initialize()
     {
+        $this->template->setTemplateOverride('header/user_notifications', 'NotifyPlus:header/user_notifications');
         $this->template->setTemplateOverride('web_notification/show', 'NotifyPlus:web_notification/show');
     }
 
@@ -29,7 +30,7 @@ class Plugin extends Base
 
     public function getPluginVersion()
     {
-        return '1.0.0';
+        return '1.0.1';
     }
 
     public function getPluginDescription()
