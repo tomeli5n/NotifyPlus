@@ -4,24 +4,6 @@
 <?php if (empty($notifications)): ?>
     <p class="alert"><?= t('No notification.') ?></p>
 <?php else: ?>
-    <?php 
-        // Todo: move to controller
-        $groupedNotifications = [];
-        foreach ($notifications as $notification) {
-            $task_id = $notification['event_data']['task']['id']; // Asumimos que siempre hay un task_id
-            //if (!isset($groupedNotifications[$task_id])) {
-                $groupedNotifications[$task_id] = [
-                    'task_id' => $task_id,
-                    'project_name' => $notification['event_data']['task']['project_name'],
-                    'project_id' => $notification['event_data']['task']['project_id'],
-                    'title' => $notification['event_data']['task']['title'],
-                    'date_creation' => $notification['date_creation'], // Usar la fecha más reciente o una lógica específica
-                    'notification_id' => $notification['id'], // para retrocompatibilidad con metodos de controller
-                    'notifications' => []
-                ];
-            //}
-            $groupedNotifications[$task_id]['notifications'][] = $notification;
-        } ?>
 <div class="table-list">
     <div class="table-list-header">
         <div class="table-list-header-count">
@@ -38,10 +20,10 @@
     <div class="table-list-row table-border-left">
         <h2>
         <span class="table-list-title">
-            <?= $this->url->link($group['title'], 'ReadNotificationController', 'redirect', array(
+            <?= $this->url->link("#".$group['task_id']." ".$group['title'], 'ReadNotificationController', 'redirect', array(
                 'plugin' => 'NotifyPlus',
                 'user_id' => $user['id'],
-                'notification_id' => $notification['id'],
+                'notification_id' => $group['notification_id'],
                 'task_id' => $group['task_id'],
                 'csrf_token' => $this->app->getToken()->getReusableCSRFToken())) ?>
         </span>
