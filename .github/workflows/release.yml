@@ -1,0 +1,29 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Get the version tag
+        id: get_tag
+        run: echo "::set-output name=tag::$(git describe --tags --abbrev=0)"
+
+      - name: Compress
+        run: zip -r ${{ steps.get_tag.outputs.tag }}.zip .
+
+      - name: Publish
+        uses: actions/upload-artifact@v2
+        with:
+          name: project-zip
+          path: ${{ steps.get_tag.outputs.tag }}.zip
