@@ -22,8 +22,30 @@ jobs:
       - name: Compress
         run: zip -r ${{ steps.get_tag.outputs.tag }}.zip .
 
-      - name: Publish
+      - name: Publish Artifact
         uses: actions/upload-artifact@v2
         with:
           name: project-zip
           path: ${{ steps.get_tag.outputs.tag }}.zip
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.get_tag.outputs.tag }}
+          release_name: Release ${{ steps.get_tag.outputs.tag }}
+          draft: true
+          prerelease: false
+          body: Description of the release here
+
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./${{ steps.get_tag.outputs.tag }}.zip
+          asset_name: ${{ steps.get_tag.outputs.tag }}.zip
+          asset_content_type: application/zip
