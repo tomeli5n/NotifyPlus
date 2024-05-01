@@ -1,5 +1,5 @@
 <div class="page-header">
-    <h2><?= t('Mis Notificaciones') ?></h2>
+    <h2><?= t('My notifications') ?></h2>
 </div>
 <?php if (empty($notifications)): ?>
     <p class="alert"><?= t('No notification.') ?></p>
