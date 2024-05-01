@@ -1,5 +1,5 @@
 <div class="page-header">
-    <h2><?= t('Mis Notificaciones') ?></h2>
+    <h2><?= t('My notifications') ?></h2>
 </div>
 <?php if (empty($notifications)): ?>
     <p class="alert"><?= t('No notification.') ?></p>
@@ -17,6 +17,21 @@
     </div>
 </div>
     <?php foreach ($groupedNotifications as $group): ?>
+        <div class="table-list-details">
+            <?= $this->dt->datetime($group['date_creation']) ?>
+            <i class="fa fa-tasks fa-fw"></i>
+            <?= $this->url->link(
+                $this->text->e($group['project_name']. " > " . $group['column_title']),
+                'BoardViewController',
+                'show',
+                array('project_id' => $group['project_id'])
+            ) ?> &gt;
+            <?= $this->modal->replaceIconLink('check', t('Marcar como leida'), 'ReadNotificationController', 'discard', array(
+                'plugin' => 'NotifyPlus',
+                'user_id' => $user['id'], 
+                'task_id' => $group['task_id'],
+                'csrf_token' => $this->app->getToken()->getReusableCSRFToken())) ?>
+        </div>
     <div class="table-list-row table-border-left">
         <h2>
         <span class="table-list-title">
@@ -29,22 +44,7 @@
         </span>
         </h2>
     </div>
-    <div class="table-list-details">
 
-    <?= $this->url->link(
-            $this->text->e($group['project_name']),
-            'BoardViewController',
-            'show',
-            array('project_id' => $group['project_id'])
-        ) ?> &gt;
-    <i class="fa fa-tasks fa-fw"></i>
-        <?= $this->dt->datetime($group['date_creation']) ?>
-        <?= $this->modal->replaceIconLink('check', t('Marcar como leida'), 'ReadNotificationController', 'discard', array(
-                'plugin' => 'NotifyPlus',
-                'user_id' => $user['id'], 
-                'task_id' => $group['task_id'],
-                'csrf_token' => $this->app->getToken()->getReusableCSRFToken())) ?>
-    </div>
 
     <?php endforeach ?>
     <?php if (! empty($notifications)): ?>
