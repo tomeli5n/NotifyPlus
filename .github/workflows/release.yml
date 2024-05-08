@@ -20,7 +20,7 @@ jobs:
         run: echo "::set-output name=tag::$(git describe --tags --abbrev=0)"
 
       - name: Compress
-        run: zip -r ${{ steps.get_tag.outputs.tag }}.zip  -x '*.git*' -x '*.github*'
+        run: zip -r ${{ steps.get_tag.outputs.tag }}.zip  -x '*.git*' -x '*.github*' .
 
       - name: Publish Artifact
         uses: actions/upload-artifact@v2
