@@ -11,6 +11,8 @@ class Plugin extends Base
     {
         $this->template->setTemplateOverride('header/user_notifications', 'NotifyPlus:header/user_notifications');
         $this->template->setTemplateOverride('web_notification/show', 'NotifyPlus:web_notification/show');
+        $this->hook->on('template:layout:css', array('template' => 'plugins/NotifyPlus/Assets/notifyplus.css'));
+
     }
 
     public function getCompatibleVersion()
@@ -30,12 +32,12 @@ class Plugin extends Base
 
     public function getPluginVersion()
     {
-        return '1.0.4';
+        return '1.1.0';
     }
 
     public function getPluginDescription()
     {
-        return 'Group web notifications by task';
+        return 'Display web notifications grouped by task';
     }
 
     public function getPluginHomepage()
