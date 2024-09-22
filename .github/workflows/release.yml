@@ -13,7 +13,7 @@ jobs:
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Get the version tag
         id: get_tag
@@ -23,7 +23,7 @@ jobs:
         run: zip -r ${{ steps.get_tag.outputs.tag }}.zip  -x '*.git*' -x '*.github*' .
 
       - name: Publish Artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: project-zip
           path: ${{ steps.get_tag.outputs.tag }}.zip
