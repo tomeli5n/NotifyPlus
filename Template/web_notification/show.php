@@ -6,8 +6,8 @@
     <?php if (empty($notifications)): ?>
         <p class="alert"><?= e('No notification.') ?></p>
     <?php else: ?>
-        <div class="notification-count">
-            <?= $nb_notifications ?> <?= $nb_notifications > 1 ? t('notifications') : t('notification') ?>
+        <div class="notification-count"> 
+            <?= t('New Activity') . $nb_notifications ?> <?= $nb_notifications > 1 ? t('notifications') : t('notification') ?>
         </div>
 
         <div class="notification-list">
@@ -20,7 +20,9 @@
                             </span>
                         </div>
                         <h3 class="notification-title <?= isset($group['is_active']) && !$group['is_active'] ? 'closed' : '' ?>">
-                                <?= $this->url->link(
+                                <?= 
+                                
+                                    $this->url->link(
                                     isset($group['task_id']) ? "#".($group['task_id'] ?? '')." ".$group['title'] : $group['title'],
                                     'ReadNotificationController',
                                     'redirect',

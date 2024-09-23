@@ -88,9 +88,7 @@ class ReadNotificationController extends \Kanboard\Controller\BaseController
 
     private function generateOverdueTitle($count, $projectName)
     {
-        return $count === 1 
-            ? "1 tarea atrasada en {$projectName}" 
-            : "{$count} tareas atrasadas en {$projectName}";
+        return $count > 1 ? "{$projectName} : " .e('%d overdue tasks', $count) : "{$count} tareas atrasadas en {$projectName}";
     }
 
     public function redirect()
@@ -98,14 +96,19 @@ class ReadNotificationController extends \Kanboard\Controller\BaseController
         $user_id = $this->getUserId();
         $notification_id = $this->request->getIntegerParam('notification_id');
         $task_id = $this->request->getIntegerParam('task_id');
-
+        $project_id = $this->request->getIntegerParam('project_id');
         $notification = $this->userUnreadNotificationModel->getById($notification_id);
         
 
-        $this->ReadNotification($user_id, $task_id);
+        $this->ReadNotification($user_id, $task_id, $project_id);
 
         if (empty($notification)) {
             $this->show();
+        } elseif ( $notification['task_id'] == 0 ) {
+            $this->response->redirect($this->helper->url->to(
+                'ProjectViewController',
+                'show',
+                array('project_id' => $project_id)));
         } elseif ($this->helper->text->contains($notification['event_name'], 'comment')) {
             $this->response->redirect($this->helper->url->to(
                 'TaskViewController',
