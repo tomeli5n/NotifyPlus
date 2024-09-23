@@ -16,24 +16,25 @@
                     <div class="notification-content">
                         <div class="notification-project">
                             <?= $this->url->link(
-                                $this->text->e($group['project_name'] . " > " . ($group['column_title'] ?? 'Unknown Column')),
+                                $this->text->e($group['project_name'] . " > " . ($group['column_title'] ?? '')),
                                 'BoardViewController',
                                 'show',
                                 array('project_id' => $group['project_id'])
                             ) ?>
                         </div>
                         <h3 class="notification-title <?= isset($group['is_active']) && !$group['is_active'] ? 'closed' : '' ?>">
-                            <?php if (isset($group['task_id'])): ?>
-                                <?= $this->url->link("#".$group['task_id']." ".$group['title'], 'ReadNotificationController', 'redirect', array(
-                                    'plugin' => 'NotifyPlus',
-                                    'user_id' => $user['id'],
-                                    'notification_id' => $group['notification_id'],
-                                    'task_id' => $group['task_id'],
-                                    'csrf_token' => $this->app->getToken()->getReusableCSRFToken()
-                                )) ?>
-                            <?php else: ?>
-                                <?= $this->text->e($group['title']) ?>
-                            <?php endif; ?>
+                                <?= $this->url->link(
+                                    isset($group['task_id']) ? "#".$group['task_id'] ?? ''." ".$group['title'] : $group['title'],
+                                    'ReadNotificationController',
+                                    'redirect',
+                                    array(
+                                        'plugin' => 'NotifyPlus',
+                                        'user_id' => $user['id'],
+                                        'notification_id' => $group['notification_id'],
+                                        'task_id' => $group['task_id'] ?? null,
+                                        'csrf_token' => $this->app->getToken()->getReusableCSRFToken()
+                                    )
+                                ) ?>
                         </h3>
                     </div>
                     <div class="notification-right">
@@ -45,6 +46,7 @@
                                 'plugin' => 'NotifyPlus',
                                 'user_id' => $user['id'], 
                                 'task_id' => $group['task_id'] ?? 0,
+                                'proyect_id' => $group['project_id'],
                                 'csrf_token' => $this->app->getToken()->getReusableCSRFToken()
                             )) ?>
                         </span>
