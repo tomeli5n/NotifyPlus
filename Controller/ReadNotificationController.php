@@ -127,10 +127,11 @@ class ReadNotificationController extends \Kanboard\Controller\BaseController
         $user_id = $this->getUserId();
         $notification_id = $this->request->getIntegerParam('notification_id');
         $task_id = $this->request->getIntegerParam('task_id');
+        $project_id = $this->request->getIntegerParam('project_id');
 
         $notification = $this->userUnreadNotificationModel->getById($notification_id);
         
-        $this->ReadNotification($user_id, $task_id);
+        $this->ReadNotification($user_id, $task_id, $project_id);
 
         $this->show();
 
@@ -145,9 +146,16 @@ class ReadNotificationController extends \Kanboard\Controller\BaseController
 
         return $user_id;
     }
-    private function ReadNotification($user_id, $task_id)
+    private function ReadNotification($user_id, $task_id, $project_id)
     {
-        return $this->db->table(self::TABLE)->like('event_data', '%"task_id":' . $task_id . ',%')->eq('user_id', $user_id)->remove();
+        if( $task_id > 0 ){
+            return $this->db->table(self::TABLE)->like('event_data', '%"task_id":' . $task_id . ',%')->eq('user_id', $user_id)->remove();
+        } else {
+            return $this->db->table(self::TABLE)->like('event_data', '%"project_id":' . $project_id . ',%')
+            ->eq('user_id', $user_id)
+            ->eq('event_name', 'task.overdue')
+            ->remove();
+        }   
     }
 }
 
