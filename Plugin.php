@@ -3,6 +3,7 @@
 namespace Kanboard\Plugin\Notifyplus;
 
 use Kanboard\Core\Plugin\Base;
+use Kanboard\Core\Translator;
 use Kanboard\Core\Notification\NotificationInterface;
 
 class Plugin extends Base
@@ -13,6 +14,19 @@ class Plugin extends Base
         $this->template->setTemplateOverride('web_notification/show', 'NotifyPlus:web_notification/show');
         $this->hook->on('template:layout:css', array('template' => 'plugins/NotifyPlus/Assets/notifyplus.css'));
 
+    }
+    public function onStartup()
+    {
+        // initialize translator, default locale en_US
+        $path = __DIR__ . '/Locale';
+        $language = $this->languageModel->getCurrentLanguage();
+        $filename = implode(DIRECTORY_SEPARATOR, array($path, $language, 'translations.php'));
+
+        if (file_exists($filename)) {
+            Translator::load($language, $path);
+        } else {
+            Translator::load('es_ES', $path);
+        }
     }
 
     public function getCompatibleVersion()

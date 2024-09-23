@@ -4,7 +4,7 @@
     <div class="notifications-modal">
     <div>
     <?php if (empty($notifications)): ?>
-        <p class="alert"><?= t('No notification.') ?></p>
+        <p class="alert"><?= e('No notification.') ?></p>
     <?php else: ?>
         <div class="notification-count">
             <?= $nb_notifications ?> <?= $nb_notifications > 1 ? t('notifications') : t('notification') ?>
