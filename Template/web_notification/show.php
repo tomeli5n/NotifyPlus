@@ -15,12 +15,9 @@
                 <div class="notification-item">
                     <div class="notification-content">
                         <div class="notification-project">
-                            <?= $this->url->link(
-                                $this->text->e($group['project_name'] . " > " . ($group['column_title'] ?? '')),
-                                'BoardViewController',
-                                'show',
-                                array('project_id' => $group['project_id'])
-                            ) ?>
+                            <span>
+                            <?= $this->text->e($group['project_name'] . " > " . ($group['column_title'] ?? '')) ?>
+                            </span>
                         </div>
                         <h3 class="notification-title <?= isset($group['is_active']) && !$group['is_active'] ? 'closed' : '' ?>">
                                 <?= $this->url->link(
@@ -32,7 +29,7 @@
                                         'user_id' => $user['id'],
                                         'notification_id' => $group['notification_id'],
                                         'task_id' => $group['task_id'] ?? null,
-                                        'proyect_id' => $group['project_id'],
+                                        'project_id' => $group['project_id'],
                                         'csrf_token' => $this->app->getToken()->getReusableCSRFToken()
                                     )
                                 ) ?>
@@ -47,7 +44,7 @@
                                 'plugin' => 'NotifyPlus',
                                 'user_id' => $user['id'], 
                                 'task_id' => $group['task_id'] ?? 0,
-                                'proyect_id' => $group['project_id'],
+                                'project_id' => $group['project_id'],
                                 'csrf_token' => $this->app->getToken()->getReusableCSRFToken()
                             )) ?>
                         </span>
@@ -56,10 +53,6 @@
             <?php endforeach ?>
         </div>
     </div>
-    <pre>NOTIFICACIONES
-        <?php print_r($notifications) ?></pre>
-    <pre>agrupadas
-        <?php print_r($groupedNotifications) ?></pre>
     <div class="notification-actions">
         <?= $this->modal->replaceIconLink('check-square-o', t('Mark all as read'), 'WebNotificationController', 'flush', array(
             'user_id' => $user['id'], 
