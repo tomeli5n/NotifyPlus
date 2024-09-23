@@ -110,8 +110,8 @@ class ReadNotificationController extends \Kanboard\Controller\BaseController
                 'show',
                 array(
                     'project_id' => $project_id,
-                    )
-                ));
+                    'search' => 'status:open assignee:me due:<=today',
+                )));
         } elseif ($this->helper->text->contains($notification['event_name'], 'comment')) {
             $this->response->redirect($this->helper->url->to(
                 'TaskViewController',
