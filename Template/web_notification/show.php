@@ -24,7 +24,7 @@
                         </div>
                         <h3 class="notification-title <?= isset($group['is_active']) && !$group['is_active'] ? 'closed' : '' ?>">
                                 <?= $this->url->link(
-                                    isset($group['task_id']) ? "#".$group['task_id'] ?? ''." ".$group['title'] : $group['title'],
+                                    isset($group['task_id']) ? "#".($group['task_id'] ?? '')." ".$group['title'] : $group['title'],
                                     'ReadNotificationController',
                                     'redirect',
                                     array(
@@ -32,6 +32,7 @@
                                         'user_id' => $user['id'],
                                         'notification_id' => $group['notification_id'],
                                         'task_id' => $group['task_id'] ?? null,
+                                        'proyect_id' => $group['project_id'],
                                         'csrf_token' => $this->app->getToken()->getReusableCSRFToken()
                                     )
                                 ) ?>
