@@ -20,21 +20,11 @@ class ReadNotificationController extends \Kanboard\Controller\BaseController
 
         $groupedNotifications = [];
         foreach ($notifications as $notification) {
-            $task_id = $notification['event_data']['task']['id']; // Asumimos que siempre hay un task_id
-            //if (!isset($groupedNotifications[$task_id])) {
-                $groupedNotifications[$task_id] = [
-                    'task_id' => $task_id,
-                    'project_name' => $notification['event_data']['task']['project_name'],
-                    'project_id' => $notification['event_data']['task']['project_id'],
-                    'title' => $notification['event_data']['task']['title'],
-                    'is_active' => $notification['event_data']['task']['is_active'],
-                    'column_title' =>  $notification['event_data']['task']['column_title'],
-                    'date_creation' => $notification['date_creation'], // Usar la fecha más reciente o una lógica específica
-                    'notification_id' => $notification['id'], // para retrocompatibilidad con metodos de controller
-                    'notifications' => []
-                ];
-            //}
-            $groupedNotifications[$task_id]['notifications'][] = $notification;
+            if ($notification['event_name'] === 'task.overdue') {
+                $this->handleOverdueNotification($notification, $groupedNotifications);
+            } else {
+                $this->handleRegularNotification($notification, $groupedNotifications);
+            }
         }
 
         $this->response->html($this->template->render('web_notification/show', array(
@@ -44,7 +34,65 @@ class ReadNotificationController extends \Kanboard\Controller\BaseController
             'user'             => $user,
         )));
     }
-    
+
+    private function handleOverdueNotification($notification, &$groupedNotifications)
+    {
+        $projectId = $notification['event_data']['tasks'][0]['project_id'];
+        $projectName = $notification['event_data']['project_name'];
+        $key = "overdue_{$projectId}";
+
+        if (!isset($groupedNotifications[$key])) {
+            $groupedNotifications[$key] = [
+                'project_id' => $projectId,
+                'project_name' => $projectName,
+                'event_name' => 'task.overdue',
+                'date_creation' => $notification['date_creation'],
+                'notification_id' => $notification['id'],
+                'tasks' => [],
+                'count' => 0,
+            ];
+        }
+
+        foreach ($notification['event_data']['tasks'] as $task) {
+            $taskId = $task['id'];
+            if (!isset($groupedNotifications[$key]['tasks'][$taskId])) {
+                $groupedNotifications[$key]['tasks'][$taskId] = $task;
+                $groupedNotifications[$key]['count']++;
+            }
+        }
+
+        $groupedNotifications[$key]['title'] = $this->generateOverdueTitle($groupedNotifications[$key]['count'], $projectName);
+    }
+
+    private function handleRegularNotification($notification, &$groupedNotifications)
+    {
+        $taskId = $notification['event_data']['task']['id'];
+        $key = "task_{$taskId}";
+
+        if (!isset($groupedNotifications[$key])) {
+            $groupedNotifications[$key] = [
+                'task_id' => $taskId,
+                'project_name' => $notification['event_data']['task']['project_name'],
+                'project_id' => $notification['event_data']['task']['project_id'],
+                'title' => $notification['event_data']['task']['title'],
+                'is_active' => $notification['event_data']['task']['is_active'],
+                'column_title' => $notification['event_data']['task']['column_title'],
+                'date_creation' => $notification['date_creation'],
+                'notification_id' => $notification['id'],
+                'notifications' => [],
+            ];
+        }
+
+        $groupedNotifications[$key]['notifications'][] = $notification;
+    }
+
+    private function generateOverdueTitle($count, $projectName)
+    {
+        return $count === 1 
+            ? "1 tarea atrasada en {$projectName}" 
+            : "{$count} tareas atrasadas en {$projectName}";
+    }
+
     public function redirect()
     {
         $user_id = $this->getUserId();
@@ -73,7 +121,8 @@ class ReadNotificationController extends \Kanboard\Controller\BaseController
             ));
         }
     }
-public function discard()
+    
+    public function discard()
     {
         $user_id = $this->getUserId();
         $notification_id = $this->request->getIntegerParam('notification_id');

@@ -23,13 +23,17 @@
                             ) ?>
                         </div>
                         <h3 class="notification-title <?= isset($group['is_active']) && !$group['is_active'] ? 'closed' : '' ?>">
-                            <?= $this->url->link("#".$group['task_id']." ".$group['title'], 'ReadNotificationController', 'redirect', array(
-                                'plugin' => 'NotifyPlus',
-                                'user_id' => $user['id'],
-                                'notification_id' => $group['notification_id'],
-                                'task_id' => $group['task_id'],
-                                'csrf_token' => $this->app->getToken()->getReusableCSRFToken()
-                            )) ?>
+                            <?php if (isset($group['task_id'])): ?>
+                                <?= $this->url->link("#".$group['task_id']." ".$group['title'], 'ReadNotificationController', 'redirect', array(
+                                    'plugin' => 'NotifyPlus',
+                                    'user_id' => $user['id'],
+                                    'notification_id' => $group['notification_id'],
+                                    'task_id' => $group['task_id'],
+                                    'csrf_token' => $this->app->getToken()->getReusableCSRFToken()
+                                )) ?>
+                            <?php else: ?>
+                                <?= $this->text->e($group['title']) ?>
+                            <?php endif; ?>
                         </h3>
                     </div>
                     <div class="notification-right">
@@ -40,7 +44,7 @@
                             <?= $this->modal->replaceIconLink('check', '', 'ReadNotificationController', 'discard', array(
                                 'plugin' => 'NotifyPlus',
                                 'user_id' => $user['id'], 
-                                'task_id' => $group['task_id'],
+                                'task_id' => $group['task_id'] ?? 0,
                                 'csrf_token' => $this->app->getToken()->getReusableCSRFToken()
                             )) ?>
                         </span>
@@ -49,6 +53,10 @@
             <?php endforeach ?>
         </div>
     </div>
+    <pre>NOTIFICACIONES
+        <?php print_r($notifications) ?></pre>
+    <pre>agrupadas
+        <?php print_r($groupedNotifications) ?></pre>
     <div class="notification-actions">
         <?= $this->modal->replaceIconLink('check-square-o', t('Mark all as read'), 'WebNotificationController', 'flush', array(
             'user_id' => $user['id'], 
