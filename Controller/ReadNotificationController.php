@@ -106,9 +106,12 @@ class ReadNotificationController extends \Kanboard\Controller\BaseController
             $this->show();
         } elseif ( $notification['task_id'] == 0 ) {
             $this->response->redirect($this->helper->url->to(
-                'ProjectViewController',
+                'BoardViewController',
                 'show',
-                array('project_id' => $project_id)));
+                array(
+                    'project_id' => $project_id,
+                    )
+                ));
         } elseif ($this->helper->text->contains($notification['event_name'], 'comment')) {
             $this->response->redirect($this->helper->url->to(
                 'TaskViewController',
