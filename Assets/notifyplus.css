@@ -1,21 +1,19 @@
 .notifications-modal {
     background-color: #fff;
-    border-radius: 3px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
     margin: 0 auto;
 }
 
 .modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 15px;
+    padding: 15px 20px;
     border-bottom: 1px solid #e1e4e8;
 }
 
 .modal-header h2 {
     margin: 0;
-    font-size: 36px;
+    font-size: 24px;
+    font-weight: bold;
 }
 
 .close-button {
@@ -24,9 +22,10 @@
 }
 
 .notification-count {
-    padding: 10px 15px;
+    padding: 10px 20px;
     border-bottom: 1px solid #e1e4e8;
-    font-weight: bold;
+    font-weight: normal;
+    color: #586069;
 }
 
 .notification-list {
@@ -36,8 +35,7 @@
 
 .notification-item {
     display: flex;
-    align-items: center;
-    padding: 10px 15px;
+    padding: 15px 20px;
     border-bottom: 1px solid #e1e4e8;
     transition: background-color 0.3s;
 }
@@ -50,14 +48,20 @@
     flex-grow: 1;
 }
 
+.notification-content a{
+    text-decoration: none;
+    color: #000; 
+}
 .notification-project {
     font-size: 0.9em;
-    color: #586069;
+    color: #0366d6;
+    margin-bottom: 5px;
 }
 
 .notification-title {
-    margin: 5px 0;
-    font-size: 14px;
+    margin: 0;
+    font-size: 16px;
+    font-weight: bold;
 }
 
 .notification-title.closed {
@@ -66,6 +70,10 @@
 
 h3.notification-title a{
     font-size: 18px !important;
+}
+
+h3.notification-title a:hover{
+    color:#0366d6;
 }
 .notification-right {
     display: flex;
@@ -82,7 +90,12 @@ h3.notification-title a{
 .notification-mark-read {
     display: none;
     cursor: pointer;
-    color: #0366d6;
+    color: #28a745;
+    font-size: 18px;
+}
+
+.notification-mark-read:hover {
+    background-color: #cfe0f1;
 }
 
 .notification-item:hover .notification-date {
@@ -94,9 +107,14 @@ h3.notification-title a{
 }
 
 .notification-actions {
-    padding: 10px 15px;
-    text-align: center;
+    padding: 15px 20px;
+    text-align: right;
     border-top: 1px solid #e1e4e8;
+}
+
+.notification-actions a {
+    color: #0366d6;
+    text-decoration: none;
 }
 
 .alert {
