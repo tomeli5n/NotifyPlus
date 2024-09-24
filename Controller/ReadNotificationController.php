@@ -104,7 +104,7 @@ class ReadNotificationController extends \Kanboard\Controller\BaseController
 
         if (empty($notification)) {
             $this->show();
-        } elseif ( $notification['task_id'] == 0 ) {
+        } elseif ( $notification['event_data']['task']['id'] == 0 ) {
             $this->response->redirect($this->helper->url->to(
                 'BoardViewController',
                 'show',
