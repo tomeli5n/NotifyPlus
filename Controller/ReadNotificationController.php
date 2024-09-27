@@ -21,9 +21,9 @@ class ReadNotificationController extends \Kanboard\Controller\BaseController
         $groupedNotifications = [];
         foreach ($notifications as $notification) {
             if ($notification['event_name'] === 'task.overdue') {
-                $this->handleOverdueNotification($notification, $groupedNotifications);
+                $this->handleProjectNotification($notification, $groupedNotifications);
             } else {
-                $this->handleRegularNotification($notification, $groupedNotifications);
+                $this->handleTaskNotification($notification, $groupedNotifications);
             }
         }
 
@@ -35,7 +35,7 @@ class ReadNotificationController extends \Kanboard\Controller\BaseController
         )));
     }
 
-    private function handleOverdueNotification($notification, &$groupedNotifications)
+    private function handleProjectNotification($notification, &$groupedNotifications)
     {
         $projectId = $notification['event_data']['tasks'][0]['project_id'];
         $projectName = $notification['event_data']['project_name'];
@@ -64,7 +64,7 @@ class ReadNotificationController extends \Kanboard\Controller\BaseController
         $groupedNotifications[$key]['title'] = $this->generateOverdueTitle($groupedNotifications[$key]['count'], $projectName);
     }
 
-    private function handleRegularNotification($notification, &$groupedNotifications)
+    private function handleTaskNotification($notification, &$groupedNotifications)
     {
         $taskId = $notification['event_data']['task']['id'];
         $key = "task_{$taskId}";
