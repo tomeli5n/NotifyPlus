@@ -18,14 +18,14 @@
                     <div class="notification-content">
                         <div class="notification-project">
                             <span>
-                            <?= $this->text->e($group['project_name'] . " > " . ($group['column_title'] ?? '')) ?>
+                            <?= $this->text->e($group['project_name'] . " > " . ($group['column_title'] ?? '').(isset($group['task_id']) ? " #".$group['task_id'] : '')) ?>
                             </span>
                         </div>
                         <h3 class="notification-title <?= isset($group['is_active']) && !$group['is_active'] ? 'closed' : '' ?>">
                                 <?= 
                                 
                                     $this->url->link(
-                                    isset($group['task_id']) ? "#".($group['task_id'] ?? '')." ".$group['title'] : $group['title'],
+                                    isset($group['task_id']) ? $group['title'] : $group['title'],
                                     'ReadNotificationController',
                                     'redirect',
                                     array(
