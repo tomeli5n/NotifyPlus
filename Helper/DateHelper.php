@@ -9,8 +9,8 @@ class DateHelper
         $ago = new \DateTime("@$datetime");
         $diff = $now->diff($ago);
 
-        $diff->w = floor($diff->d / 7);
-        $diff->d -= $diff->w * 7;
+        $weeks = floor($diff->d / 7);
+        $diff->d -= $weeks * 7;
 
         $string = array(
             'y' => 'año',
@@ -21,15 +21,22 @@ class DateHelper
             'i' => 'minuto',
             's' => 'segundo',
         );
-        foreach ($string as $k => &$v) {
-            if ($diff->$k) {
-                $v = $diff->$k . ' ' . $v . ($diff->$k > 1 ? 's' : '');
-            } else {
-                unset($string[$k]);
+
+        $parts = [];
+        foreach ($string as $k => $v) {
+            if ($k === 'w') {
+                if ($weeks) {
+                    $parts[] = $weeks . ' ' . $v . ($weeks > 1 ? 's' : '');
+                }
+            } elseif (isset($diff->$k) && $diff->$k) {
+                $parts[] = $diff->$k . ' ' . $v . ($diff->$k > 1 ? 's' : '');
             }
         }
 
-        if (!$full) $string = array_slice($string, 0, 1);
-        return $string ? 'hace ' . implode(', ', $string) : 'justo ahora';
+        if (!$full) {
+            $parts = array_slice($parts, 0, 1);
+        }
+
+        return $parts ? 'hace ' . implode(', ', $parts) : 'justo ahora';
     }
 }
