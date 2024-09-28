@@ -2,7 +2,9 @@
 
 namespace Kanboard\Plugin\NotifyPlus\Helper;
 
-class DateHelper
+use Kanboard\Core\Base;
+
+class DateHelper extends Base
 {
     public static function time_elapsed_string($datetime, $full = false) {
         $now = new \DateTime;
@@ -13,13 +15,13 @@ class DateHelper
         $diff->d -= $weeks * 7;
 
         $string = array(
-            'y' => 'año',
-            'm' => 'mes',
-            'w' => 'semana',
-            'd' => 'día',
-            'h' => 'hora',
-            'i' => 'minuto',
-            's' => 'segundo',
+            'y' => t('year'),
+            'm' => t('month'),
+            'w' => t('week'),
+            'd' => t('day'),
+            'h' => t('hour'),
+            'i' => t('minute'),
+            's' => t('second'),
         );
 
         $parts = [];
@@ -37,6 +39,6 @@ class DateHelper
             $parts = array_slice($parts, 0, 1);
         }
 
-        return $parts ? 'hace ' . implode(', ', $parts) : 'justo ahora';
+        return $parts ? implode(', ', $parts) .' ' . t('ago') : t('just now');
     }
 }
