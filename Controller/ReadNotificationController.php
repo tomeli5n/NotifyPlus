@@ -67,19 +67,17 @@ class ReadNotificationController extends \Kanboard\Controller\BaseController
         $taskId = $notification['event_data']['task']['id'];
         $key = "task_{$taskId}";
 
-        if (!isset($groupedNotifications[$key])) {
-            $groupedNotifications[$key] = [
-                'task_id' => $taskId,
-                'project_name' => $notification['event_data']['task']['project_name'],
-                'project_id' => $notification['event_data']['task']['project_id'],
-                'title' => $notification['event_data']['task']['title'],
-                'is_active' => $notification['event_data']['task']['is_active'],
-                'column_title' => $notification['event_data']['task']['column_title'],
-                'date_creation' => $notification['date_creation'],
-                'notification_id' => $notification['id'],
-                'notifications' => [],
-            ];
-        }
+        $groupedNotifications[$key] = [
+            'task_id' => $taskId,
+            'project_name' => $notification['event_data']['task']['project_name'],
+            'project_id' => $notification['event_data']['task']['project_id'],
+            'title' => $notification['event_data']['task']['title'],
+            'is_active' => $notification['event_data']['task']['is_active'],
+            'column_title' => $notification['event_data']['task']['column_title'],
+            'date_creation' => $notification['date_creation'],
+            'notification_id' => $notification['id'],
+            'notifications' => [],
+        ];
 
         $groupedNotifications[$key]['notifications'][] = $notification;
     }
