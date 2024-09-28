@@ -1,25 +1,17 @@
 # NotifyPlus Plugin for Kanboard
 
-The notifyPlus plugin enhances the web notifications of Kanboard, grouping notifications by tasks, summarizing activity and displaying only relevant information.
+The notifyPlus plugin enhances the web notifications of Kanboard, grouping events by tasks or project.
 
-### Before
-
-![image](https://raw.githubusercontent.com/tomeli5n/NotifyPlus/main/Screenshots/web-notifications.png)
-
-
-### After
 ![image](https://raw.githubusercontent.com/tomeli5n/NotifyPlus/main/Screenshots/grouped-notifications.png)
-
 ## Features
 
-- **Task-Based Notifications**: Notifications are grouped by tasks, providing a summarized view of activity.
-- **Mark as read**: Mark as read all notifications of a task.
-- **Compatibility**: Compatible with normal Kanboard notifications. No migrations is needed.
+- **Task Notifications**: Groups assignments, comments, column changes, due dates, and other task update events into a single notification.
+- **Project Notifications**: Groups overdue tasks of a project into a single notification.
+- **Mark as read**: Mark all notifications as read, or only the notifications of a specific task.
 
 ## Upcoming Features
 
 - **Enhanced Notification Details**: Display more information about the type of notification, such as due date, column changes, mentions, etc.
-- **Show Non-Task Notifications**: Extend notification support to include notifications not directly related to tasks.
 - **Pin Notifications**: The tasks is not flushed when clicked.
 - **Feature Flag**: Enable/Disable the plugin and its features.
 

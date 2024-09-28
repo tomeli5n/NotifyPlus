@@ -29,7 +29,7 @@ class Plugin extends Base
         if (file_exists($filename)) {
             Translator::load($language, $path);
         } else {
-            Translator::load('es_ES', $path);
+            Translator::load('es_US', $path);
         }
     }
 
@@ -50,7 +50,7 @@ class Plugin extends Base
 
     public function getPluginVersion()
     {
-        return '1.1.0';
+        return '1.2.3';
     }
 
     public function getPluginDescription()
