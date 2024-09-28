@@ -22,9 +22,10 @@
 }
 
 .notification-count {
-    padding: 10px 20px;
+    padding: 10px 15px;
     border-bottom: 1px solid #e1e4e8;
     font-weight: normal;
+    font-size: 0.9em;
     color: #586069;
 }
 
@@ -35,7 +36,7 @@
 
 .notification-item {
     display: flex;
-    padding: 15px 20px;
+    padding: 10px 15px;
     border-bottom: 1px solid #e1e4e8;
     transition: background-color 0.3s;
 }
@@ -89,12 +90,12 @@ h3.notification-title a:hover{
 .notification-mark-read {
     display: none;
     cursor: pointer;
-    color: #28a745;
-    font-size: 18px;
+    font-size: 26px;
+    border-radius: 7px;
 }
 
 .notification-mark-read:hover {
-    background-color: #cfe0f1;
+    background-color: #e0efff;
 }
 
 .notification-item:hover .notification-date {
