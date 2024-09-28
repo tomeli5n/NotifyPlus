@@ -59,7 +59,7 @@ class ReadNotificationController extends \Kanboard\Controller\BaseController
             }
         }
 
-        $groupedNotifications[$key]['title'] = $this->generateOverdueTitle($groupedNotifications[$key]['count'], $projectName);
+        $groupedNotifications[$key]['title'] = $this->generateOverdueTitle($groupedNotifications[$key]['count'], $projectName, $taskId);
     }
 
     private function handleTaskNotification($notification, &$groupedNotifications)
@@ -82,9 +82,9 @@ class ReadNotificationController extends \Kanboard\Controller\BaseController
         $groupedNotifications[$key]['notifications'][] = $notification;
     }
 
-    private function generateOverdueTitle($count, $projectName)
+    private function generateOverdueTitle($count, $projectName, $taskId)
     {
-        return $count > 1 ? "{$projectName} : " .e('%d overdue tasks', $count) : "{$count} tareas atrasadas en {$projectName}";
+        return $count > 1 ? "{$projectName} : " .e('%d overdue tasks', $count) : "{$projectName} : ". e('Task #%d is overdue', $taskId );
     }
 
     public function redirect()

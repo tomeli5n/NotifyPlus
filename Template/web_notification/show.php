@@ -9,7 +9,7 @@
         <p class="alert"><?= e('No notification.') ?></p>
     <?php else: ?>
         <div class="notification-count"> 
-            <?= t('New Activity') . $nb_notifications ?> <?= $nb_notifications > 1 ? t('notifications') : t('notification') ?>
+            <?= t('New Activity'). ': '. $nb_notifications ?> <?= $nb_notifications > 1 ? t('notifications') : t('notification') ?>
         </div>
 
         <div class="notification-list">
