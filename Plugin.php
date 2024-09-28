@@ -5,6 +5,7 @@ namespace Kanboard\Plugin\Notifyplus;
 use Kanboard\Core\Plugin\Base;
 use Kanboard\Core\Translator;
 use Kanboard\Core\Notification\NotificationInterface;
+use Kanboard\Plugin\NotifyPlus\Helper\DateHelper;
 
 class Plugin extends Base
 {
@@ -14,7 +15,10 @@ class Plugin extends Base
         $this->template->setTemplateOverride('web_notification/show', 'NotifyPlus:web_notification/show');
         $this->hook->on('template:layout:css', array('template' => 'plugins/NotifyPlus/Assets/notifyplus.css'));
 
+        // Register the DateHelper
+        $this->helper->register('dateHelper', '\Kanboard\Plugin\NotifyPlus\Helper\DateHelper');
     }
+
     public function onStartup()
     {
         // initialize translator, default locale en_US

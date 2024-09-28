@@ -1,3 +1,5 @@
+<?php use Kanboard\Plugin\NotifyPlus\Helper\DateHelper; ?>
+
 <div class="page-header">
         <h2><?= t('My notifications') ?></h2>
     </div>
@@ -39,7 +41,7 @@
                     </div>
                     <div class="notification-right">
                         <span class="notification-date">
-                            <?= date('d/M H:i', $group['date_creation']) ?>
+                            <?= DateHelper::time_elapsed_string($group['date_creation']) ?>
                         </span>
                         <span class="notification-mark-read">
                             <?= $this->modal->replaceIconLink('check', '', 'ReadNotificationController', 'discard', array(
