@@ -41,18 +41,16 @@ class ReadNotificationController extends \Kanboard\Controller\BaseController
         $projectName = $notification['event_data']['project_name'];
         $key = "overdue_{$projectId}";
 
-        if (!isset($groupedNotifications[$key])) {
-            $groupedNotifications[$key] = [
-                'project_id' => $projectId,
-                'project_name' => $projectName,
-                'event_name' => 'task.overdue',
-                'date_creation' => $notification['date_creation'],
-                'notification_id' => $notification['id'],
-                'tasks' => [],
-                'count' => 0,
-            ];
-        }
-
+        $groupedNotifications[$key] = [
+            'project_id' => $projectId,
+            'project_name' => $projectName,
+            'event_name' => 'task.overdue',
+            'date_creation' => $notification['date_creation'],
+            'notification_id' => $notification['id'],
+            'tasks' => [],
+            'count' => 0,
+        ];
+        
         foreach ($notification['event_data']['tasks'] as $task) {
             $taskId = $task['id'];
             if (!isset($groupedNotifications[$key]['tasks'][$taskId])) {
