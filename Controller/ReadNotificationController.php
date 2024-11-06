@@ -26,6 +26,8 @@ class ReadNotificationController extends \Kanboard\Controller\BaseController
                 $this->handleTaskNotification($notification, $groupedNotifications);
             }
         }
+        $groupedNotifications = array_reverse($groupedNotifications);
+
 
         $this->response->html($this->template->render('web_notification/show', array(
             'notifications'    => $notifications,
