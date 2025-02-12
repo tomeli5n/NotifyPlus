@@ -161,6 +161,40 @@ class ReadNotificationController extends \Kanboard\Controller\BaseController
             ->remove();
         }   
     }
+    public function soundNotifications()
+    {
+        $user = $this->getUser();
+
+        if ($this->userUnreadNotificationModel->hasNotifications($user['id'])) {
+            $notifications = $this->userUnreadNotificationModel->getAll($user['id']);
+
+            foreach ($notifications as $value) {
+                $timestamp = $value['date_creation'];
+            }
+
+            if($timestamp > strtotime("-10 seconds")) {
+                $this->response->html(
+                    '<audio controls autoplay style="display: none!important;">
+                        <source src="'.$this->helper->url->dir().'plugins/NotifyPlus/Assets/Audio/sound-notification-2.mp3" type="audio/mpeg">
+                        <source src="'.$this->helper->url->dir().'plugins/NotifyPlus/Assets/Audio/sound-notification-2.ogg" type="audio/ogg">
+                    </audio>'
+                );
+            }
+
+            $groupedNotifications = [];
+            foreach ($notifications as $notification) {
+                if ($notification['event_name'] === 'task.overdue') {
+                    $this->handleProjectNotification($notification, $groupedNotifications);
+                } else {
+                    $this->handleTaskNotification($notification, $groupedNotifications);
+                }
+            }
+            $groupedNotifications = array_reverse($groupedNotifications);
+
+            $this->response->html(count($groupedNotifications));
+
+        }
+    }
 }
 
 ?>
