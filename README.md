@@ -5,6 +5,8 @@ The notifyPlus plugin enhances the web notifications of Kanboard, grouping event
 ![image](https://raw.githubusercontent.com/tomeli5n/NotifyPlus/main/Screenshots/grouped-notifications.png)
 ## Features
 
+
+- **Sound Notification**: Forked from [SoundNotification](https://github.com/kenlog/SoundNotification?tab=readme-ov-file) Plugin
 - **Task Notifications**: Groups assignments, comments, column changes, due dates, and other task update events into a single notification.
 - **Project Notifications**: Groups overdue tasks of a project into a single notification.
 - **Mark as read**: Mark all notifications as read, or only the notifications of a specific task.
@@ -30,3 +32,12 @@ If you encounter any issues or have suggestions for improvement, feel free to [o
 ## License
 
 NotifyPlus is licensed under the [MIT License](LICENSE).
+
+## Compatibilidad
+Este plugin puede tener conflictos con SoundNotification. Para usar ambos:
+1. Asegúrese de que NotifyPlus se cargue después de SoundNotification
+2. Configure diferentes intervalos de actualización
+3. Use diferentes selectores CSS para las notificaciones
+
+## Configuración
+...
