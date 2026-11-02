@@ -18,7 +18,7 @@ function soundalert() {
                 $("#soundalert").html(response);
                 setTimeout(function () {
                     soundalert();
-                }, 5000);
+                }, 60000);
             }
         }
     });

@@ -9,6 +9,7 @@ The notifyPlus plugin enhances the web notifications of Kanboard, grouping event
 - **Sound Notification**: Forked from [SoundNotification](https://github.com/kenlog/SoundNotification?tab=readme-ov-file) Plugin
 - **Task Notifications**: Groups assignments, comments, column changes, due dates, and other task update events into a single notification.
 - **Project Notifications**: Groups overdue tasks of a project into a single notification.
+- **Overdue Notifications**: Only the project owner and project managers receive overdue task notifications.
 - **Mark as read**: Mark all notifications as read, or only the notifications of a specific task.
 
 ## Upcoming Features

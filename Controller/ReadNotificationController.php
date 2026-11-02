@@ -95,7 +95,7 @@ class ReadNotificationController extends \Kanboard\Controller\BaseController
         $notification_id = $this->request->getIntegerParam('notification_id');
         $task_id = $this->request->getIntegerParam('task_id');
         $project_id = $this->request->getIntegerParam('project_id');
-        $notification = $this->userUnreadNotificationModel->getById($notification_id);
+        $notification = $this->userUnreadNotificationModel->getByIdAndUser($notification_id, $user_id);
         
 
         $this->ReadNotification($user_id, $task_id, $project_id);
@@ -133,7 +133,7 @@ class ReadNotificationController extends \Kanboard\Controller\BaseController
         $task_id = $this->request->getIntegerParam('task_id');
         $project_id = $this->request->getIntegerParam('project_id');
 
-        $notification = $this->userUnreadNotificationModel->getById($notification_id);
+        $notification = $this->userUnreadNotificationModel->getByIdAndUser($notification_id, $user_id);
         
         $this->ReadNotification($user_id, $task_id, $project_id);
 
