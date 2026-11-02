@@ -2,10 +2,11 @@ name: Release
 
 on:
   push:
-    branches:
-      - main
     tags:
       - 'v*'
+
+permissions:
+  contents: write
 
 jobs:
   build:
@@ -15,37 +16,15 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Get the version tag
-        id: get_tag
-        run: echo "::set-output name=tag::$(git describe --tags --abbrev=0)"
-
+      # Kanboard expects the plugin inside a NotifyPlus/ folder
       - name: Compress
-        run: zip -r ${{ steps.get_tag.outputs.tag }}.zip  -x '*.git*' -x '*.github*' .
+        run: git archive HEAD --prefix=NotifyPlus/ --format=zip -o "NotifyPlus-${GITHUB_REF_NAME}.zip" -- . ':!.github' ':!.gitignore'
 
-      - name: Publish Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: project-zip
-          path: ${{ steps.get_tag.outputs.tag }}.zip
-
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
+      # The release may already exist with hand-written notes; only create it if missing
+      - name: Publish Release Asset
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ steps.get_tag.outputs.tag }}
-          release_name: Release ${{ steps.get_tag.outputs.tag }}
-          draft: true
-          prerelease: false
-          body: Description of the release here
-
-      - name: Upload Release Asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./${{ steps.get_tag.outputs.tag }}.zip
-          asset_name: ${{ steps.get_tag.outputs.tag }}.zip
-          asset_content_type: application/zip
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1 || \
+            gh release create "$GITHUB_REF_NAME" --draft --title "$GITHUB_REF_NAME" --generate-notes
+          gh release upload "$GITHUB_REF_NAME" "NotifyPlus-${GITHUB_REF_NAME}.zip" --clobber
