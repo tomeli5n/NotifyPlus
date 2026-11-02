@@ -15,7 +15,11 @@ class Plugin extends Base
         $this->template->setTemplateOverride('web_notification/show', 'NotifyPlus:web_notification/show');
         $this->hook->on('template:layout:js', array('template' => 'plugins/NotifyPlus/Assets/js/main.js'));
         $this->hook->on('template:layout:css', array('template' => 'plugins/NotifyPlus/Assets/notifyplus.css'));
-        
+
+        $this->container['userNotificationModel'] = $this->container->factory(function ($c) {
+            return new \Kanboard\Plugin\NotifyPlus\Model\UserNotificationModel($c);
+        });
+
 
         // Register the DateHelper
         $this->helper->register('dateHelper', '\Kanboard\Plugin\NotifyPlus\Helper\DateHelper');
@@ -37,7 +41,7 @@ class Plugin extends Base
 
     public function getCompatibleVersion()
     {
-        return '>=1.0.35';
+        return '>=1.2.55';
     }
 
     public function getPluginName()
@@ -52,7 +56,7 @@ class Plugin extends Base
 
     public function getPluginVersion()
     {
-        return '1.3.0';
+        return '1.4.0';
     }
 
     public function getPluginDescription()
